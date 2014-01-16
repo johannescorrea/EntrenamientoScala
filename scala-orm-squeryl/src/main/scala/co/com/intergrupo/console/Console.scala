@@ -4,17 +4,26 @@ import org.squeryl.PrimitiveTypeMode._
 import org.squeryl.adapters.DerbyAdapter
 import org.squeryl.adapters.H2Adapter
 import org.squeryl.adapters.MySQLAdapter
+import org.squeryl.internals.DatabaseAdapter
 import co.com.intergrupo.database._
 import co.com.intergrupo.entities._
 import org.squeryl.SessionFactory
 import org.squeryl.Session
+import org.squeryl.adapters.OracleAdapter
 
 object App extends Config {
+  
+  def getSession(adapter:DatabaseAdapter) = Session.create(java.sql.DriverManager.getConnection(url, userName, password),  adapter)
 
   def main(args: Array[String]): Unit = {
+    
     Class.forName(driver)
-    SessionFactory.concreteFactory = Some(() => Session.create(java.sql.DriverManager.getConnection(url, userName, password), new H2Adapter))
-
+    SessionFactory.concreteFactory = Some(driver) match {
+      case Some("org.h2.Driver") => Some(() => getSession (new H2Adapter) )
+      case Some("oracle.jdbc.driver.OracleDriver") => Some(() => getSession(new OracleAdapter))
+      case _ => sys.error("Soporta solo para los drivers:  org.h2.Driver o oracle.jdbc.driver.OracleDriver")
+    } 
+    
     transaction {
       Subasta.drop
       Subasta.create
