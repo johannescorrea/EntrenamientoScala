@@ -8,7 +8,7 @@ import spray.can.Http
 
 object Boot extends App with Config {
   
-  // comentario d
+  // comentario doble
 
   implicit val system = ActorSystem("scala-spray-akka-angular")
 
