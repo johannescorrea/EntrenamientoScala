@@ -6,10 +6,10 @@
 	<artifactId>scala-orm-jpa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
-	<description>Scala JPA</description>
+	<description>${project.artifactId}</description>
 	<properties>
+		<encoding>UTF-8</encoding>
 		<scala.version>2.10.0</scala.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.jar>${project.artifactId}</project.jar>
 		<project.autor>Nelson Fernando Perez</project.autor>
 		<project.empresa>Intergrupo S.A</project.empresa>
@@ -17,19 +17,12 @@
 		<project.main.class>co.com.intergrupo.console.App</project.main.class>
 	</properties>
 
-
 	<dependencies>
 
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
 			<version>${scala.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>1.0</version>
 		</dependency>
 
 		<dependency>
@@ -69,6 +62,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.13</version>
@@ -89,42 +88,6 @@
 		</dependency>
 
 	</dependencies>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<repositories>
-		<repository>
-			<id>ScalaToolsMaven2Repository</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases/</url>
-		</repository>
-		<repository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</repository>
-		<repository>
-			<id>typesafe</id>
-			<name>Typesafe Repository</name>
-			<url>http://repo.typesafe.com/typesafe/releases/</url>
-		</repository>
-		<repository>
-			<id>Spray</id>
-			<name>Spray repository</name>
-			<url>http://repo.spray.io</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>eclipselink repository</id>
-			<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<sourceDirectory>src/main/scala</sourceDirectory>
@@ -169,8 +132,6 @@
 				<configuration>
 					<useFile>false</useFile>
 					<disableXmlReport>true</disableXmlReport>
-					<!-- If you have classpath issue like NoDefClassError,... -->
-					<!-- useManifestOnlyJar>false</useManifestOnlyJar -->
 					<includes>
 						<include>**/*Test.*</include>
 						<include>**/*Suite.*</include>
@@ -178,8 +139,63 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<repositories>
+		<repository>
+			<id>ScalaToolsMaven2Repository</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases/</url>
+		</repository>
+		<repository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</repository>
+		<repository>
+			<id>typesafe</id>
+			<name>Typesafe Repository</name>
+			<url>http://repo.typesafe.com/typesafe/releases/</url>
+		</repository>
+		<repository>
+			<id>Spray</id>
+			<name>Spray repository</name>
+			<url>http://repo.spray.io</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<id>eclipselink repository</id>
+			<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
+		</repository>
+	</repositories>
 
 
 </project>

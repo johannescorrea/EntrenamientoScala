@@ -5,11 +5,15 @@
 	<artifactId>scala.spray.akka</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
-	<description>Scala Spray Akka Angular</description>
-	<inceptionYear>2010</inceptionYear>
+	<description>${project.artifactId}</description>
 	<properties>
 		<encoding>UTF-8</encoding>
 		<scala.version>2.10.0</scala.version>
+		<project.jar>${project.artifactId}</project.jar>
+		<project.autor>Nelson Fernando Perez</project.autor>
+		<project.empresa>Intergrupo S.A</project.empresa>
+		<project.empresa.url>http://www.intergrupo.com.co/</project.empresa.url>
+		<project.main.class>co.com.intergrupo.console.App</project.main.class>
 	</properties>
 
 	<dependencies>
@@ -120,7 +124,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Test -->
 	</dependencies>
 
 	<build>
@@ -173,6 +176,25 @@
 						<include>**/*Suite.*</include>
 					</includes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<descriptors>
+						<descriptor>assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
