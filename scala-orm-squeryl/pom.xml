@@ -33,9 +33,19 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
+			<groupId>com.typesafe.slick</groupId>
+			<artifactId>slick-extensions_2.10</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.squeryl</groupId>
 			<artifactId>squeryl_2.10</artifactId>
 			<version>0.9.5-6</version>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
@@ -147,6 +157,11 @@
 			<id>typesafe</id>
 			<name>Typesafe Repository</name>
 			<url>http://repo.typesafe.com/typesafe/releases/</url>
+		</repository>
+		<repository>
+			<id>typesafeOracle</id>
+			<name>Typesafe Oracle Repository</name>
+			<url>http://repo.typesafe.com/typesafe/maven-releases/</url>
 		</repository>
 		<repository>
 			<id>Spray</id>
