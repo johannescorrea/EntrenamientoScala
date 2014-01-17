@@ -5,7 +5,7 @@ import org.squeryl.KeyedEntity
 import org.squeryl.annotations.Column
 import co.com.intergrupo.entities._
 import org.squeryl.dsl.ManyToOne
-import co.com.intergrupo.database.Subasta
+import co.com.intergrupo.database._
 import org.squeryl.dsl.OneToMany
 import scala.slick.direct.AnnotationMapper.table
 import org.squeryl.Schema
@@ -27,16 +27,16 @@ object TipoDocumento extends Enumeration {
 
 }
 
-class Persona(@Column("PERS_TIPO_DOCUMENTO") var tipoDocumento: String, @Column("PERS_CEDULA") val cedula: String, @Column("PERS_NOMBRE") val nombres: String, @Column("PERS_APELLIDO") val apellidos: String, @Column("PERS_EMAIL") val usuario: String, @Column("PERS_PASSWORD") val password: String, @Column("PERS_EMAIL") val email: Option[String], @Column("PERS_TELEFONO") val telefono: String) extends KeyedEntity[Long] {
+class Persona(@Column("PERS_TIPO_DOCUMENTO") var tipoDocumento: String, @Column("PERS_CEDULA") val cedula: String, @Column("PERS_NOMBRE") val nombres: String, @Column("PERS_APELLIDO") val apellidos: String, @Column("PERS_USUARIO") val usuario: String, @Column("PERS_PASSWORD") val password: String, @Column("PERS_EMAIL") val email: String, @Column("PERS_TELEFONO") val telefono: String) extends KeyedEntity[Long] {
   @Column("PERS_ID")
   val id: Long = 0
   @Column("PERS_FECHA_CREACION")
   var lastModified = new Timestamp(System.currentTimeMillis)
 
-  lazy val subastas: OneToMany[Subasta] = Subasta.vendedorSubasta.left(this)
-  lazy val ofertaSubastas: OneToMany[HistorialSubasta] = Subasta.compradorSubasta.left(this)
+  lazy val subastas: OneToMany[Subasta] = SchemaSubasta.vendedorSubasta.left(this)
+  //lazy val ofertaSubastas: OneToMany[HistorialSubasta] = SchemaSubasta.compradorSubasta.left(this)
 
-  def this() = this("", "", "", "", "", "", Some(""), "")
+  def this() = this("", "", "", "", "", "", "", "")
 }
 
 class ModeloVehiculo(@Column("MOVE_MARCA") var marca: String, @Column("MOVE_MODELO") val modelo: String) extends KeyedEntity[Long] {
@@ -45,7 +45,7 @@ class ModeloVehiculo(@Column("MOVE_MARCA") var marca: String, @Column("MOVE_MODE
   @Column("MOVE_FECHA_CREACION")
   var lastModified = new Timestamp(System.currentTimeMillis)
 
-  lazy val vehiculoSubastados: OneToMany[Subasta] = Subasta.modeloVehiculo.left(this)
+  lazy val vehiculoSubastados: OneToMany[Subasta] = SchemaSubasta.modeloVehiculo.left(this)
 
   def this() = this("", "")
 }
@@ -56,27 +56,27 @@ class Subasta(@Column("SUBA_VENDEDOR") var vendedor: Long, @Column("SUBA_MODELO"
   @Column("SUBA_FECHA_CREACION")
   var lastModified = new Timestamp(System.currentTimeMillis)
 
-  lazy val historial: OneToMany[HistorialSubasta] = Subasta.subastaTransaccion.left(this)
+ // lazy val historial: OneToMany[HistorialSubasta] = SchemaSubasta.subastaTransaccion.left(this)
 
-  lazy val personaVendedor: ManyToOne[Persona] = Subasta.vendedorSubasta.right(this)
+  lazy val personaVendedor: ManyToOne[Persona] = SchemaSubasta.vendedorSubasta.right(this)
 
 }
 
-class HistorialSubasta(@Column("HISU_SUBASTA") var subasta: Long, @Column("HISU_COMPRADOR") val comprador: Long, @Column("HISU_OFERTA") val oferta: Long, @Column("HISU_TRANSACCION") val transaccion: Char) extends KeyedEntity[Long] {
+class HistorialSubasta(@Column("HISU_SUBASTA") var subastaId: Long, @Column("HISU_COMPRADOR") val comprador: Long, @Column("HISU_OFERTA") val oferta: Long, @Column("HISU_TRANSACCION") val transaccion: Char) extends KeyedEntity[Long] {
   @Column("HISU_ID")
   val id: Long = 0
   @Column("HISU_HORA_OFERTA")
   var lastModified = new Timestamp(System.currentTimeMillis)
 
-  lazy val subastaOfertada: ManyToOne[Subasta] = Subasta.subastaTransaccion.right(this)
+  //lazy val subastaOfertada: ManyToOne[Subasta] = SchemaSubasta.subastaTransaccion.right(this)
 
-  lazy val personaComprador: ManyToOne[Persona] = Subasta.compradorSubasta.right(this)
+ // lazy val personaComprador: ManyToOne[Persona] = SchemaSubasta.compradorSubasta.right(this)
 }
 
-class Config(var name: String, var value: String) extends KeyedEntity[Long] {
+class Config(val name: String, val value: String) extends BaseEntity {
   def this() = this("", "")
 }
 
-class Usuario(var email: String, var password: String) extends BaseEntity {
+class Usuario(val email: String, val password: String) extends BaseEntity {
   def this() = this("", "")
 }
