@@ -16,15 +16,15 @@ object SchemaSubasta extends Schema {
 
   val subasta = table[Subasta]("SUBASTA")
 
-  // val historialSubasta = table[HistorialSubasta]("HISTORIAL_SUBASTA")
+  val historialSubasta = table[HistorialSubasta]("HISTORIAL_SUBASTA")
 
   val vendedorSubasta = oneToManyRelation(persona, subasta).via((p, s) => p.id === s.vendedor)
 
   val modeloVehiculo = oneToManyRelation(tipoModeloVehiculo, subasta).via((tmv, s) => tmv.id === s.modelo)
 
-  // val compradorSubasta = oneToManyRelation(persona, historialSubasta).via((p, hs) => p.id === hs.comprador)
+  val compradorSubasta = oneToManyRelation(persona, historialSubasta).via((p, hs) => p.id === hs.comprador)
 
-  // val subastaTransaccion = oneToManyRelation(subasta, historialSubasta).via((s, hs) => s.id === hs.subastaId)
+  val subastaTransaccion = oneToManyRelation(subasta, historialSubasta).via((s, hs) => s.id === hs.subastaId)
 
   on(config)(s => declare(
     s.id is (autoIncremented("config_id"))))
@@ -43,8 +43,8 @@ object SchemaSubasta extends Schema {
 
   on(subasta)(s => declare(
     s.id is (autoIncremented("suba_id"))))
-  
-  //on(historialSubasta)(s => declare(
-  //  s.id is (autoIncremented("hisu_id"))))
+
+  on(historialSubasta)(s => declare(
+    s.id is (autoIncremented("hisu_id"))))
 
 }

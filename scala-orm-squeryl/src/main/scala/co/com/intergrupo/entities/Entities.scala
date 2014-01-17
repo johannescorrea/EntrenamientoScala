@@ -16,15 +16,10 @@ class BaseEntity extends KeyedEntity[Long] {
 }
 
 object TipoDocumento extends Enumeration {
-
   type TipoDocumento = Value
-
   val CC = Value("Cedula de Ciudadania")
-
   val CE = Value("Cedula de Extranjero")
-
   val TI = Value("Tarjeta de Identidad")
-
 }
 
 class Persona(@Column("PERS_TIPO_DOCUMENTO") var tipoDocumento: String, @Column("PERS_CEDULA") val cedula: String, @Column("PERS_NOMBRE") val nombres: String, @Column("PERS_APELLIDO") val apellidos: String, @Column("PERS_USUARIO") val usuario: String, @Column("PERS_PASSWORD") val password: String, @Column("PERS_EMAIL") val email: String, @Column("PERS_TELEFONO") val telefono: String) extends KeyedEntity[Long] {
@@ -32,9 +27,8 @@ class Persona(@Column("PERS_TIPO_DOCUMENTO") var tipoDocumento: String, @Column(
   val id: Long = 0
   @Column("PERS_FECHA_CREACION")
   var lastModified = new Timestamp(System.currentTimeMillis)
-
   lazy val subastas: OneToMany[Subasta] = SchemaSubasta.vendedorSubasta.left(this)
-  //lazy val ofertaSubastas: OneToMany[HistorialSubasta] = SchemaSubasta.compradorSubasta.left(this)
+  lazy val ofertaSubastas: OneToMany[HistorialSubasta] = SchemaSubasta.compradorSubasta.left(this)
 
   def this() = this("", "", "", "", "", "", "", "")
 }
@@ -44,7 +38,6 @@ class ModeloVehiculo(@Column("MOVE_MARCA") var marca: String, @Column("MOVE_MODE
   val id: Long = 0
   @Column("MOVE_FECHA_CREACION")
   var lastModified = new Timestamp(System.currentTimeMillis)
-
   lazy val vehiculoSubastados: OneToMany[Subasta] = SchemaSubasta.modeloVehiculo.left(this)
 
   def this() = this("", "")
@@ -55,22 +48,18 @@ class Subasta(@Column("SUBA_VENDEDOR") var vendedor: Long, @Column("SUBA_MODELO"
   val id: Long = 0
   @Column("SUBA_FECHA_CREACION")
   var lastModified = new Timestamp(System.currentTimeMillis)
-
- // lazy val historial: OneToMany[HistorialSubasta] = SchemaSubasta.subastaTransaccion.left(this)
-
+  lazy val historial: OneToMany[HistorialSubasta] = SchemaSubasta.subastaTransaccion.left(this)
   lazy val personaVendedor: ManyToOne[Persona] = SchemaSubasta.vendedorSubasta.right(this)
 
 }
 
-class HistorialSubasta(@Column("HISU_SUBASTA") var subastaId: Long, @Column("HISU_COMPRADOR") val comprador: Long, @Column("HISU_OFERTA") val oferta: Long, @Column("HISU_TRANSACCION") val transaccion: Char) extends KeyedEntity[Long] {
+class HistorialSubasta(@Column("HISU_SUBASTA") var subastaId: Long, @Column("HISU_COMPRADOR") val comprador: Long, @Column("HISU_OFERTA") val oferta: Long, @Column("HISU_TRANSACCION") val transaccion: String) extends KeyedEntity[Long] {
   @Column("HISU_ID")
   val id: Long = 0
   @Column("HISU_HORA_OFERTA")
   var lastModified = new Timestamp(System.currentTimeMillis)
-
-  //lazy val subastaOfertada: ManyToOne[Subasta] = SchemaSubasta.subastaTransaccion.right(this)
-
- // lazy val personaComprador: ManyToOne[Persona] = SchemaSubasta.compradorSubasta.right(this)
+  lazy val subastaOfertada: ManyToOne[Subasta] = SchemaSubasta.subastaTransaccion.right(this)
+  lazy val personaComprador: ManyToOne[Persona] = SchemaSubasta.compradorSubasta.right(this)
 }
 
 class Config(val name: String, val value: String) extends BaseEntity {

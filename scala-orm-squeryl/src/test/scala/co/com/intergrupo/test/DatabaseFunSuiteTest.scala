@@ -30,7 +30,7 @@ class DatabaseFunSuiteTest extends FunSuite with BeforeAndAfter with TraitConnec
   }
 
   after {
-    close
+   //close
   }
 
 }
