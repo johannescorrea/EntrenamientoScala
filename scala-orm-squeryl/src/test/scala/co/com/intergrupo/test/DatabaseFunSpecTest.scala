@@ -9,7 +9,7 @@ import co.com.intergrupo.entities._
 import org.squeryl.PrimitiveTypeMode.transaction
 
 @RunWith(classOf[JUnitRunner])
-class MyFunSpecTest extends FunSpec with BeforeAndAfter with TraitConnection {
+class DatabaseFunSpecTest extends FunSpec with BeforeAndAfter with TraitConnection {
 
   before {
     connect
