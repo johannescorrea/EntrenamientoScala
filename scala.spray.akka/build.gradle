@@ -1,0 +1,36 @@
+apply plugin: 'scala'
+
+buildDir = 'target'
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+	
+}
+
+
+dependencies {
+
+	compile 'com.typesafe.akka:akka-actor_2.10:2.2.3'
+	compile 'com.typesafe.akka:akka-dataflow_2.10:2.2.3'
+	compile 'com.typesafe.akka:akka-slf4j_2.10:2.2.3'
+	compile 'com.typesafe:config:1.0.2'
+	compile 'com.typesafe.slick:slick_2.10:1.0.1'
+	compile 'com.typesafe.slick:slick-extensions_2.10:1.0.0'
+	compile 'org.squeryl:squeryl_2.10:0.9.5-6'
+	compile 'io.spray:spray-servlet:1.2.0'
+	compile 'io.spray:spray-io:1.2.0'
+	compile 'io.spray:spray-can:1.2.0'
+	compile 'io.spray:spray-http:1.2.0'
+	compile 'io.spray:spray-httpx:1.2.0'
+	compile 'io.spray:spray-routing:1.2.0'
+	compile 'io.spray:spray-json_2.10:1.2.5'
+	compile 'net.liftweb:lift-json_2.10:2.5.1'
+
+	testCompile 'junit:junit:4.11'
+//	
+//	runtime 'org.eclipse.persistence:org.eclipse.persistence.jpa:2.0.0'
+//	runtime 'org.eclipse.persistence:org.eclipse.persistence.core:2.0.0'
+//	runtime 'org.eclipse.persistence:org.eclipse.persistence.asm:2.0.0'
+//	runtime 'org.eclipse.persistence:org.eclipse.persistence.antlr:2.0.0'
+}

@@ -1,3 +1,6 @@
 /target/
 /nbactions.xml
 .cache
+/build
+/.gradle
+/.settings
