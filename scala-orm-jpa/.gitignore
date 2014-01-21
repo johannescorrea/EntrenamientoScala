@@ -1,2 +1,5 @@
 /target
 .cache
+/build
+/.gradle
+/.settings
