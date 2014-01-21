@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vehiculos>
+	<vehiculo placa="ABC123">
+		<localidad>medellin</localidad>
+		<identificacion>88034100</identificacion>
+		<titular>nelson perez</titular>
+		<impuestos>true</impuestos>
+		<runt>true</runt>
+		<reportado>true</reportado>
+	</vehiculo>
+	<vehiculo placa="ABC456">
+		<localidad>bogota</localidad>
+		<identificacion>88034101</identificacion>
+		<titular>fernando perez</titular>
+		<impuestos>false</impuestos>
+		<runt>true</runt>
+		<reportado>false</reportado>
+	</vehiculo>
+	<vehiculo placa="ABC789">
+		<localidad>barranquilla</localidad>
+		<identificacion>88034102</identificacion>
+		<titular>nelson fernando perez</titular>
+		<impuestos>true</impuestos>
+		<runt>true</runt>
+		<reportado>true</reportado>
+	</vehiculo>
+</vehiculos>
