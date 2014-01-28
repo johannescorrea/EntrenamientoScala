@@ -10,26 +10,21 @@ import spray.http.StatusCode
 import spray.http.StatusCodes
 import spray.routing.RequestContext
 import spray.httpx.Json4sSupport
-
 import co.com.intergrupo.entities.Usuario
-
 import scala.concurrent.{ ExecutionContext, Future }
 import spray.httpx.marshalling.Marshaller
 import scala.concurrent.ExecutionContext.Implicits.global
-
 import spray.json.{ JsValue, JsString, JsonFormat, DefaultJsonProtocol }
 import java.util.{ GregorianCalendar, Date }
 import javax.xml.bind.DatatypeConverter
 import spray.httpx.SprayJsonSupport
 import scala.concurrent.ExecutionContext
-
 import org.json4s.Formats
 import org.json4s.DefaultFormats
 import org.json4s.JsonAST.JObject
-
 import scala.concurrent.ExecutionContext.Implicits.global
-
 import org.slf4j.LoggerFactory
+import spray.http.HttpHeaders.RawHeader
 
 class RestServiceActor extends Actor with RestService {
 
@@ -45,77 +40,64 @@ trait RestService extends HttpService with Json4sSupport with SLF4JLogging {
   val logger = LoggerFactory.getLogger(getClass)
   implicit val executionContext = actorRefFactory.dispatcher
 
-  val restRoute = path("") {
-    get {
-      complete {
-        <html>
-          <body>
-            <h1>Este es una prueba uno <i>scala-spray-akka</i>!</h1>
-          </body>
-        </html>
-      }
-    }
-  } ~
-    path("vista" / Segment) { id =>
+  def cross(origin: String) = respondWithHeaders(
+    RawHeader("Access-Control-Allow-Origin", origin),
+    RawHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"),
+    RawHeader("Access-Control-Allow-Headers", "X-Requested-With, Cache-Control, Pragma, Origin, Authorization, Content-Type"),
+    RawHeader("Access-Control-Max-Age", "86400"),
+    RawHeader("Content-Type", "application/json"))
+
+  def crossDomain = cross("*")
+
+  val restRoute = path("deleteUsuario" / LongNumber) {
+    Id =>
       get {
-        complete(s"parametro ${id}")
-      } ~
-        post {
-          complete(s"parametro ${id}")
+        complete {
+          var usuario = Usuario("nefeper" + Id, "*****")
+          usuario
         }
-    } ~
-    path("Id" / LongNumber) {
-      Id =>
+      }
+  } ~
+    path("getUsuario" / Segment) { Id =>
+      respondWithMediaType(MediaTypes.`application/json`) {
         get {
+          crossDomain {
+            complete {
+              var usuario = Usuario("nefeper" + Id, "*****")
+              usuario
+            }
+          }
+        } ~ post {
           complete {
-            <html>
-              <body>
-                <h1>Este es una prueba dois id: { Id } <i>scala-spray-akka</i>!</h1>
-              </body>
-            </html>
+            var usuario = Usuario("nefeper" + Id, "*****")
+            usuario
           }
         }
-    } ~
-    path("getUsuario" / Segment) { Id =>
-      get {
-        complete {
-          var usuario = Usuario("nefeper", "*****")
-          usuario
-        }
-      } ~ options {
-        complete {
-          var usuario = Usuario("nefeper", "*****")
-          usuario
-        }
       }
     } ~
-    path("addCustomer") {
+    path("saveUsuario") {
       post {
         entity(as[JObject]) { usuarioObject =>
-          respondWithMediaType(MediaTypes.`application/json`) {
-            complete {
-              //logger.info("addCustomer 1")
-              //val usuario = usuarioObject.extract[Usuario]
-              //logger.info("addCustomer 2")
-              //insert customer information into a DB and return back customer obj
-              //usuario
-              usuarioObject.extract[Usuario]
-            }
+          complete {
+            logger.info("addCustomer 1")
+            usuarioObject.extract[Usuario]
           }
         }
       }
     } ~
-    path("enviar") {
+    path("addUsuario") {
       post {
-        entity(as[Usuario]) {
-          item =>
-            respondWithMediaType(MediaTypes.`application/json`) {
-              complete {
-                item
-              }
+        respondWithMediaType(MediaTypes.`application/json`) {
+          crossDomain {
+            entity(as[Usuario]) {
+              item =>
+                complete {
+                  item
+                }
             }
+          }
         }
       }
-    } 
+    }
 
 }
