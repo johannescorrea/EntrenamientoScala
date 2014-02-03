@@ -1,9 +1,23 @@
 package co.com.intergrupo.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.StoredProcedureParameter;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * The persistent class for the PERSONA database table.
@@ -11,7 +25,9 @@ import java.util.List;
  */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "PERS_EMAIL_UK", columnNames = { "PERS_EMAIL" }), @UniqueConstraint(name = "PERS_DOCUMENTO_UK", columnNames = { "PERS_TIPO_DOCUMENTO", "PERS_CEDULA" }) })
-@NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p")
+@NamedQueries({ @NamedQuery(name = "Persona.findCedula", query = "SELECT p FROM Persona p WHERE p.cedula = :cedula "), @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p") })
+@NamedStoredProcedureQuery(name = "actualizarNombreCompleto", procedureName = "actualizar_nombre_apellido", parameters = { @StoredProcedureParameter(mode = ParameterMode.IN, name = "cedula", type = String.class),
+    @StoredProcedureParameter(mode = ParameterMode.IN, name = "nombre", type = String.class), @StoredProcedureParameter(mode = ParameterMode.IN, name = "apellido", type = String.class) })
 public class Persona implements Serializable {
 
   private static final long serialVersionUID = 1L;
