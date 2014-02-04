@@ -21,6 +21,7 @@ Titulo: <input ng-model="query.titulo">
 
 <ul>
     <li ng-repeat="obj in libros | filter:query | orderBy:orderField:orderReverse">
-    	<div ng-include src="'views/libro-detail.html'"></div>
+      <libro.detail></libro.detail>
+      <!--<div ng-include src="'views/libro-detail.html'"></div>-->
     </li>
 </ul>

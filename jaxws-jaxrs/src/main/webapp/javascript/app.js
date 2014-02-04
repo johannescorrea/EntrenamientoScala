@@ -5,7 +5,26 @@
 
 var angularIG = angular.module('angularIG', [ 'ngRoute', 'ngResource' ]);
 
-// angularIG.constant('RestService', 'http://localhost:8088');
+angularIG.constant('RestServiceUrl', 'http://localhost:8088');
+
+angularIG.factory('RestService',['$resource','RestServiceUrl',function($resource,RestServiceUrl){
+	var RestService = {};
+	var restServiceUrl = RestServiceUrl; //'http://localhost:8088';
+	RestService.getUsuario = function () {
+		return $resource(restServiceUrl+'/getUsuario/:Id', {Id:123},{ get : { method : 'GET' }, save : { method : 'POST' } });
+	};
+	RestService.addUsuario = function (){
+		return $resource(restServiceUrl+'/addUsuario', {}, { save : { method : 'POST' } });
+	};
+	return RestService;
+}]);
+
+angularIG.directive("libro.detail", function() {
+    return {
+      restrict: "E",
+      templateUrl:'views/libro-detail.html'
+    };
+});
 
 angularIG.config(function($routeProvider, $locationProvider, $httpProvider) {
 
@@ -38,23 +57,25 @@ angularIG.factory('usuarioRest', [ '$resource', function($resource) {
 } ]);
 
 angularIG.factory('enviarRest', [ '$resource', function($resource) {
-	return $resource('http://localhost:8088/enviar', {}, { save : { method : 'POST' } });
+	return $resource('http://localhost:8088/addUsuario', {}, { save : { method : 'POST' } });
 } ]);
 
 angularIG.controller('mostrarContactos', [ '$scope', '$routeParams',
-		'usuarioRest', 'enviarRest', function($scope, $routeParams, usuarioRest, enviarRest) {
+		'RestService', function($scope, $routeParams, RestService) {
 			$scope.link = "contactos";
 			$scope.suma = function() {
-				usuarioRest.get({
+				RestService.getUsuario().get({
 					Id : 123
 				}, function(data) {
 					alert("get " + data.email + "-->" + data.password);
 				});
+				/*
 				enviarRest.save({
 					email : "nf@gmail.com",
 					password : "123abc"
 				}, function(data) {
 					alert("post " + data.email + "-->" + data.password);
 				});
+				*/
 			};
 		} ]);
