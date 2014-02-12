@@ -53,7 +53,7 @@ trait RestService extends HttpService with Json4sSupport with SLF4JLogging {
     Id =>
       get {
         complete {
-          var usuario = Usuario("nefeper" + Id, "*****")
+          var usuario = new Usuario("nefeper" + Id, "*****")
           usuario
         }
       }
@@ -63,13 +63,13 @@ trait RestService extends HttpService with Json4sSupport with SLF4JLogging {
         get {
           crossDomain {
             complete {
-              var usuario = Usuario("nefeper" + Id, "*****")
+              var usuario = new Usuario("nefeper" + Id, "*****")
               usuario
             }
           }
         } ~ post {
           complete {
-            var usuario = Usuario("nefeper" + Id, "*****")
+            var usuario = new Usuario("nefeper" + Id, "*****")
             usuario
           }
         }

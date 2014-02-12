@@ -1,7 +1,10 @@
 package co.com.intergrupo.database
 
-import org.squeryl._
-import org.squeryl.PrimitiveTypeMode._
+import org.squeryl.PrimitiveTypeMode.long2ScalarLong
+import org.squeryl.PrimitiveTypeMode.oneToManyRelation
+import org.squeryl.PrimitiveTypeMode.string2ScalarString
+import org.squeryl.Schema
+
 import co.com.intergrupo.entities._
 
 object SchemaSubasta extends Schema {
@@ -18,13 +21,13 @@ object SchemaSubasta extends Schema {
 
   val historialSubasta = table[HistorialSubasta]("HISTORIAL_SUBASTA")
 
-  val vendedorSubasta = oneToManyRelation(persona, subasta).via((p, s) => p.id === s.vendedor)
+  val vendedorSubasta = oneToManyRelation(persona, subasta).via((p, s) => p.id === s.id)
 
-  val modeloVehiculo = oneToManyRelation(tipoModeloVehiculo, subasta).via((tmv, s) => tmv.id === s.modelo)
+  val modeloVehiculo = oneToManyRelation(tipoModeloVehiculo, subasta).via((tmv, s) => tmv.id === s.id)
 
-  val compradorSubasta = oneToManyRelation(persona, historialSubasta).via((p, hs) => p.id === hs.comprador)
+  val compradorSubasta = oneToManyRelation(persona, historialSubasta).via((p, hs) => p.id === hs.id)
 
-  val subastaTransaccion = oneToManyRelation(subasta, historialSubasta).via((s, hs) => s.id === hs.subastaId)
+  val subastaTransaccion = oneToManyRelation(subasta, historialSubasta).via((s, hs) => s.id === hs.id)
 
   on(config)(s => declare(
     s.id is (autoIncremented("config_id"))))
@@ -46,5 +49,7 @@ object SchemaSubasta extends Schema {
 
   on(historialSubasta)(s => declare(
     s.id is (autoIncremented("hisu_id"))))
+
+  
 
 }

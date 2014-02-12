@@ -18,6 +18,7 @@ trait TraitConnection {
   var ds = new ComboPooledDataSource
 
   def connect() {
+    
     ds.setDriverClass(driver)
     ds.setJdbcUrl(url)
     ds.setUser(userName)
@@ -31,6 +32,7 @@ trait TraitConnection {
       case Some("oracle.jdbc.driver.OracleDriver") => Some(() => Session.create(ds.getConnection, new OracleAdapter))
       case _ => sys.error("Soporta solo para los drivers:  org.h2.Driver o oracle.jdbc.driver.OracleDriver")
     }
+    
   }
 
   def close() {

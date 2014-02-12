@@ -263,4 +263,5 @@
 			<url>http://scala-tools.org/repo-releases</url>
 		</pluginRepository>
 	</pluginRepositories>
+	<packaging>ejb</packaging>
 </project>

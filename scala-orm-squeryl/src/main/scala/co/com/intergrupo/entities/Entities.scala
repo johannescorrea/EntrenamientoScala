@@ -7,7 +7,6 @@ import co.com.intergrupo.entities._
 import org.squeryl.dsl.ManyToOne
 import co.com.intergrupo.database._
 import org.squeryl.dsl.OneToMany
-import scala.slick.direct.AnnotationMapper.table
 import org.squeryl.Schema
 
 class BaseEntity extends KeyedEntity[Long] {
@@ -41,25 +40,7 @@ class ModeloVehiculo(@Column("MOVE_MARCA") var marca: String, @Column("MOVE_MODE
   lazy val vehiculoSubastados: OneToMany[Subasta] = SchemaSubasta.modeloVehiculo.left(this)
 
   def this() = this("", "")
-}
-
-class Subasta(@Column("SUBA_VENDEDOR") var vendedor: Long, @Column("SUBA_MODELO") val modelo: Long, @Column("SUBA_ANHO") val anho: Int, @Column("SUBA_PLACA_VEHICULO") val placa: String, @Column("SUBA_PRECIO") val precio: Long, @Column("SUBA_INCREMENTO_MINIMO") val incremento: Long, @Column("SUBA_KILOMETRAJE") val kilometraje: Long, @Column("SUBA_TRANSMICION") val transmicion: String, @Column("SUBA_LOCALIDAD") val localidad: String) extends KeyedEntity[Long] {
-  @Column("SUBA_ID")
-  val id: Long = 0
-  @Column("SUBA_FECHA_CREACION")
-  var lastModified = new Timestamp(System.currentTimeMillis)
-  lazy val historial: OneToMany[HistorialSubasta] = SchemaSubasta.subastaTransaccion.left(this)
-  lazy val personaVendedor: ManyToOne[Persona] = SchemaSubasta.vendedorSubasta.right(this)
-
-}
-
-class HistorialSubasta(@Column("HISU_SUBASTA") var subastaId: Long, @Column("HISU_COMPRADOR") val comprador: Long, @Column("HISU_OFERTA") val oferta: Long, @Column("HISU_TRANSACCION") val transaccion: String) extends KeyedEntity[Long] {
-  @Column("HISU_ID")
-  val id: Long = 0
-  @Column("HISU_HORA_OFERTA")
-  var lastModified = new Timestamp(System.currentTimeMillis)
-  lazy val subastaOfertada: ManyToOne[Subasta] = SchemaSubasta.subastaTransaccion.right(this)
-  lazy val personaComprador: ManyToOne[Persona] = SchemaSubasta.compradorSubasta.right(this)
+  
 }
 
 class Config(val name: String, val value: String) extends BaseEntity {
